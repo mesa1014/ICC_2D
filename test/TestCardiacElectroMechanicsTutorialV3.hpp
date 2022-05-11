@@ -63,14 +63,14 @@ public:
     cell->SetParameter("ode_time_step", 0.1); // Set the same as defined in HeartHandler
     cell->SetParameter("IP3Par", 0.00069); //
     cell->SetParameter("t_start", 600000); // Set larger than total simulation time
-
     double x = pNode->rGetLocation()[0];
     double y = pNode->rGetLocation()[1];
     ChastePoint<2> centre(0.1,0.45);
     ChastePoint<2> radii (0.01,0.01);
     ChasteEllipsoid<2> ellipseRegion(centre, radii);
     ChastePoint<2> myPoint(x, y);
-
+    // double ca = cell->GetIntracellularCalciumConcentration();
+    // std::cout << "Ca: " << ca << std::endl;
     if(ellipseRegion.DoesContain(myPoint))
     {
       cell->SetParameter("t_start", 0);
@@ -147,7 +147,7 @@ public:
     HeartConfig::Instance()->SetVisualizeWithCmgui(true);
     HeartConfig::Instance()->SetVisualizeWithMeshalyzer(false);
     HeartConfig::Instance()->SetVisualizeWithVtk(false);
-
+    // HeartConfig::Instance()->SetOutputVariables(rY[1]);
     // Cell factory
     ICCCellFactory cell_factory;
 
@@ -178,7 +178,14 @@ public:
       &problem_defn,
       "icc2d");
 
+      c_vector<double,2> node_to_watch;
+      node_to_watch(0) = 0.1;
+      node_to_watch(1) = 0.4;
+      problem.SetWatchedPosition(node_to_watch);
+      problem.SetOutputDeformationGradientsAndStress(100.0);
+
       // solve
+      problem.Initialise();
       problem.Solve();
 
 

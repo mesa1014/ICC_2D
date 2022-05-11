@@ -24,7 +24,9 @@ using namespace std;
 
     double CellICCBioPhy::GetIntracellularCalciumConcentration()
     {
-        return var_chaste_interface__ICC_Membrane__Ca_i;
+        // std::cout<< "Ca: " << var_chaste_interface__ICC_Membrane__Ca_i << std::endl;
+        // return var_chaste_interface__ICC_Membrane__Ca_i;
+        return mStateVariables[1];
     }
 
     CellICCBioPhy::CellICCBioPhy(boost::shared_ptr<AbstractIvpOdeSolver> pSolver, boost::shared_ptr<AbstractStimulusFunction> pIntracellularStimulus)
