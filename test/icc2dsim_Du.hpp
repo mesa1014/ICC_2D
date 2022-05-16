@@ -8,10 +8,13 @@
 #include "PetscSetupAndFinalize.hpp"
 // #include "../src/imtiaz_2002d_noTstart_COR.hpp"
 #include "../src/CellICCBioPhy.hpp"
+#include "../src/Du2013_neural_sens.hpp"
+#include "../src/DummyDerivedCa.hpp"
+#include "../src/ICCFactory.hpp"
+
 #include "TetrahedralMesh.hpp"
 #include "DistributedTetrahedralMesh.hpp"
 #include "TrianglesMeshReader.hpp"
-#include "../src/DummyDerivedCa.hpp"
 #include "Debug.hpp"
 #include "AbstractElement.hpp"
 #include "Node.hpp"
@@ -47,46 +50,10 @@
 
 using namespace std;
 
-class ICCCellFactory : public AbstractCardiacCellFactory<2>
-{
-
-public:
-  ICCCellFactory():AbstractCardiacCellFactory<2>()
-  {
-  }
-
-  AbstractCardiacCell* CreateCardiacCellForTissueNode(Node<2>* pNode)
-  {
-    // Cellimtiaz_2002d_noTstart_CORFromCellML* cell = new Cellimtiaz_2002d_noTstart_CORFromCellML(mpSolver, mpZeroStimulus);
-    // cell->SetParameter("eta", 0.04);
-    CellICCBioPhy* cell = new CellICCBioPhy(mpSolver, mpZeroStimulus);
-    cell->SetParameter("V_excitation", -55); // excitation value (threshold) default: -55mV
-    cell->SetParameter("live_time", 10000); // time of resting potential
-    cell->SetParameter("ode_time_step", 0.1); // Set the same as defined in HeartHandler
-    cell->SetParameter("IP3Par", 0.00069); //
-    cell->SetParameter("t_start", 600000); // Set larger than total simulation time
-    double x = pNode->rGetLocation()[0];
-    double y = pNode->rGetLocation()[1];
-    ChastePoint<2> centre(0.1,0.45);
-    ChastePoint<2> radii (0.01,0.01);
-    ChasteEllipsoid<2> ellipseRegion(centre, radii);
-    ChastePoint<2> myPoint(x, y);
-    // double ca = cell->GetIntracellularCalciumConcentration();
-    // std::cout << "Ca: " << ca << std::endl;
-    if(ellipseRegion.DoesContain(myPoint))
-    {
-      cell->SetParameter("t_start", 0);
-      std::cout<<"I'm inside region!" << std::endl;
-    }
-    return cell;
-  }
-};
-#include "Hdf5ToMeshalyzerConverter.hpp"
-
-class Test2DMonodomain : public CxxTest::TestSuite
+class Test2DMonodomainV2 : public CxxTest::TestSuite
 {
 public:
-  void TestSimulation() //throw(Exception)
+  void TestSimulationV2() //throw(Exception)
   {
     ///// Read electric mesh file
     // TetrahedralMesh<2,2> mesh;
@@ -130,13 +97,13 @@ public:
     // std::vector<unsigned> fixed_nodes2  = {516, 552, 588, 624, 660, 696, 732, 768, 804, 840, 876, 912,3138, 3153, 3232, 3457, 3478, 3528, 3548}; //148, 185, 222, 259, 296, 333,
 
     // dev test
-    for (unsigned i=1; i<mechanics_mesh.GetNumNodes(); i++)
-    {
-      double X = mechanics_mesh.GetNode(i)->rGetLocation()[0];
-      double Y = mechanics_mesh.GetNode(i)->rGetLocation()[1];
-      std::cout <<"node id: " << i << ", X: " << X << " , Y: " << Y << std::endl;
-
-    }
+    // for (unsigned i=1; i<mechanics_mesh.GetNumNodes(); i++)
+    // {
+    //   double X = mechanics_mesh.GetNode(i)->rGetLocation()[0];
+    //   double Y = mechanics_mesh.GetNode(i)->rGetLocation()[1];
+    //   std::cout <<"node id: " << i << ", X: " << X << " , Y: " << Y << std::endl;
+    //
+    // }
 
     // Simulation settings
     HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
@@ -159,8 +126,11 @@ public:
     HeartConfig::Instance()->SetVisualizeWithMeshalyzer(false);
     HeartConfig::Instance()->SetVisualizeWithVtk(false);
     // HeartConfig::Instance()->SetOutputVariables(rY[1]);
+
     // Cell factory
-    ICCCellFactory cell_factory;
+    std::set<unsigned> iccNodes;
+    for (unsigned i=0; i < mesh.GetNumAllNodes() ; ++i) iccNodes.insert(i);
+    ICCFactory<2> cell_factory(iccNodes);
 
     // Material law
     MooneyRivlinMaterialLaw<2> law(7.0);
@@ -188,7 +158,7 @@ public:
       &mechanics_mesh,
       &cell_factory,
       &problem_defn,
-      "icc2d");
+      "icc2d_Du");
 
       c_vector<double,2> node_to_watch;
       node_to_watch(0) = 0.1;
