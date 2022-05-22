@@ -81,7 +81,6 @@ public:
     return cell;
   }
 };
-#include "Hdf5ToMeshalyzerConverter.hpp"
 
 class Test2DMonodomain : public CxxTest::TestSuite
 {
@@ -143,7 +142,7 @@ public:
     HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
     HeartConfig::Instance()->SetCapacitance(2.5);
     HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.12, 0.12));
-    HeartConfig::Instance()->SetSimulationDuration(30000);  //ms.
+    HeartConfig::Instance()->SetSimulationDuration(5000);  //ms.
     // HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,0.1,100); // doesn't work here!
     HeartConfig::Instance()->SetPrintingTimeStep(100.0);
 

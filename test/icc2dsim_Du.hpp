@@ -92,10 +92,6 @@ public:
     for(unsigned int k = 0; k < fixed_nodes.size(); k++)
     std::cout << "fixed_nodes:" << fixed_nodes[k] << ' ' << std::endl;
 
-    // std::vector<unsigned> fixed_nodes2  = {516, 552, 588, 624, 660, 696, 732, 768, 804, 840, 876, 912, 1815, 1838, 1916, 2150, 2174, 2252, 3138, 3153, 3232, 3457, 3478, 3528, 3548, 0, 37, 74, 111, 148, 185, 222, 259, 296, 333, 370, 407, 444, 916, 935, 997, 1255, 1289, 1338, 2271, 2306, 2354, 2612, 2647, 2695};
-    // std::vector<unsigned> fixed_nodes2  = {0, 516, 1338, 1838, 2695, 3548};
-    // std::vector<unsigned> fixed_nodes2  = {516, 552, 588, 624, 660, 696, 732, 768, 804, 840, 876, 912,3138, 3153, 3232, 3457, 3478, 3528, 3548}; //148, 185, 222, 259, 296, 333,
-
     // dev test
     // for (unsigned i=1; i<mechanics_mesh.GetNumNodes(); i++)
     // {
@@ -110,7 +106,7 @@ public:
     HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
     HeartConfig::Instance()->SetCapacitance(2.5);
     HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.12, 0.12));
-    HeartConfig::Instance()->SetSimulationDuration(30000);  //ms.
+    HeartConfig::Instance()->SetSimulationDuration(6000);  //ms.
     // HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,0.1,100); // doesn't work here!
     HeartConfig::Instance()->SetPrintingTimeStep(100.0);
 
@@ -133,15 +129,15 @@ public:
     ICCFactory<2> cell_factory(iccNodes);
 
     // Material law
-    MooneyRivlinMaterialLaw<2> law(7.0);
-    ExponentialMaterialLaw<2> law2(7.0, 1.5); // First parameter is 'a', second 'b', in W=a*exp(b(I1-3))
+    MooneyRivlinMaterialLaw<2> law(6.0);
+    ExponentialMaterialLaw<2> law2(1000.0, 2.0); // First parameter is 'a', second 'b', in W=a*exp(b(I1-3))
 
     // Fibre directions
     // coming soon!
 
     // Cardiac ElectroMechanics problem definition
     ElectroMechanicsProblemDefinition<2> problem_defn(mechanics_mesh);
-    problem_defn.SetContractionModel(NASH2004,0.1/*contraction model ODE timestep*/);
+    problem_defn.SetContractionModel(NASH,0.1/*contraction model ODE timestep*/); //KERCHOFFS2003
     // problem_defn.SetSolverType(IMPLICIT);
     // problem_defn.SetDeformationAffectsElectrophysiology(false /*deformation affects conductivity*/, false /*deformation affects cell models*/);
     // problem_defn.SetUseDefaultCardiacMaterialLaw(INCOMPRESSIBLE);
