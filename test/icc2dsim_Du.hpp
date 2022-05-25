@@ -70,16 +70,17 @@ public:
     // mechanics_mesh.ConstructFromMeshReader(mesh_reader_m);
 
     TetrahedralMesh<2,2> mesh;
-    mesh.ConstructRegularSlabMesh(0.01/*stepsize*/, 0.2/*length*/, 0.5/*width*/, 0.1/*depth*/);
+    mesh.ConstructRegularSlabMesh(0.1/*stepsize*/, 2.0/*length*/, 3.0/*width*/, 0.1/*depth*/);
 
     QuadraticMesh<2> mechanics_mesh;
-    mechanics_mesh.ConstructRegularSlabMesh(0.01, 0.2, 0.5, 0.1 /*as above with a different stepsize*/);
+    mechanics_mesh.ConstructRegularSlabMesh(0.1, 2.0, 3.0, 0.1 /*as above with a different stepsize*/);
 
 
     ///// fixed nodes are all nodes on top and bottom
+    ///// Don't forget to change top fixed nodes, if you changed the mesh size
     std::vector<unsigned> fixed_nodes;
     std::vector<unsigned> fixed_nodes_bottom  = NonlinearElasticityTools<2>::GetNodesByComponentValue(mechanics_mesh, 1, 0.0);
-    std::vector<unsigned> fixed_nodes_top     = NonlinearElasticityTools<2>::GetNodesByComponentValue(mechanics_mesh, 1, 0.5);
+    std::vector<unsigned> fixed_nodes_top     = NonlinearElasticityTools<2>::GetNodesByComponentValue(mechanics_mesh, 1, 3.0);
 
     for(unsigned int j = 0; j < fixed_nodes_top.size(); j++)
     {
@@ -106,7 +107,7 @@ public:
     HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
     HeartConfig::Instance()->SetCapacitance(2.5);
     HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.12, 0.12));
-    HeartConfig::Instance()->SetSimulationDuration(6000);  //ms.
+    HeartConfig::Instance()->SetSimulationDuration(37000);  //ms.
     // HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,0.1,100); // doesn't work here!
     HeartConfig::Instance()->SetPrintingTimeStep(100.0);
 
