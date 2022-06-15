@@ -6,7 +6,7 @@
 #include "AbstractCardiacCell.hpp"
 #include "AbstractCardiacCellFactory.hpp"
 #include "../src/DummyDerivedCa.hpp"
-#include "../src/Du2013_neural_sens.hpp"
+#include "../src/ICCNeuralCalib_SMC_noCases.hpp"
 
 template<unsigned DIM>
 class ICCFactory : public AbstractCardiacCellFactory<DIM>
@@ -15,8 +15,8 @@ class ICCFactory : public AbstractCardiacCellFactory<DIM>
   std::set<unsigned> setICCNode;
 
   public:
-  ICCFactory(std::set<unsigned> iccNodes) : 
-  AbstractCardiacCellFactory<DIM>(), 
+  ICCFactory(std::set<unsigned> iccNodes) :
+  AbstractCardiacCellFactory<DIM>(),
   setICCNode(iccNodes)
   {};
 

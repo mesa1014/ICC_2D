@@ -39,6 +39,9 @@
 #include "ExponentialMaterialLaw.hpp"
 #include "MooneyRivlinMaterialLaw.hpp"
 #include "CompressibleMooneyRivlinMaterialLaw.hpp"
+#include "FungMaterialLaw.hpp"
+#include "SchmidCostaExponentialLaw2d.hpp"
+
 // cell factories
 #include "PlaneStimulusCellFactory.hpp"
 #include "LuoRudy1991.hpp"
@@ -70,10 +73,10 @@ public:
     // mechanics_mesh.ConstructFromMeshReader(mesh_reader_m);
 
     TetrahedralMesh<2,2> mesh;
-    mesh.ConstructRegularSlabMesh(0.1/*stepsize*/, 2.0/*length*/, 3.0/*width*/, 0.1/*depth*/);
+    mesh.ConstructRegularSlabMesh(0.1/*stepsize*/, 2.0/*length*/, 3.0/*width*/, 0.2/*depth*/);
 
     QuadraticMesh<2> mechanics_mesh;
-    mechanics_mesh.ConstructRegularSlabMesh(0.1, 2.0, 3.0, 0.1 /*as above with a different stepsize*/);
+    mechanics_mesh.ConstructRegularSlabMesh(0.2, 2.0, 3.0, 0.2 /*as above with a different stepsize*/);
 
 
     ///// fixed nodes are all nodes on top and bottom
@@ -107,11 +110,12 @@ public:
     HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
     HeartConfig::Instance()->SetCapacitance(2.5);
     HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.12, 0.12));
-    HeartConfig::Instance()->SetSimulationDuration(37000);  //ms.
+    HeartConfig::Instance()->SetSimulationDuration(60000);  //ms.
     // HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,0.1,100); // doesn't work here!
     HeartConfig::Instance()->SetPrintingTimeStep(100.0);
 
-    // unsigned a = (unsigned) HeartConfig::Instance()->GetPrintingTimeStep();
+    // unsigned a = (unsigned) HeartConfig::Instance()->GetPrintingTimeStep();  double y = pNode->GetPoint()[1];
+
     // cout <<"Unsigned print timestep: " << a << endl;
 
     cout << "Print time step: " << HeartConfig::Instance()->GetPrintingTimeStep() << endl;
@@ -130,9 +134,10 @@ public:
     ICCFactory<2> cell_factory(iccNodes);
 
     // Material law
-    MooneyRivlinMaterialLaw<2> law(6.0);
-    ExponentialMaterialLaw<2> law2(1000.0, 2.0); // First parameter is 'a', second 'b', in W=a*exp(b(I1-3))
-
+    MooneyRivlinMaterialLaw<2> law(0.1);
+    // ExponentialMaterialLaw<2> law2(1000.0, 2.0); // First parameter is 'a', second 'b', in W=a*exp(b(I1-3))
+    // FungMaterialLaw<2> law2(1400.0, 39.0, 72.0, 0.4);
+    SchmidCostaExponentialLaw2d law2;
     // Fibre directions
     // coming soon!
 
@@ -147,7 +152,7 @@ public:
     problem_defn.SetMechanicsSolveTimestep(100.0);
     // problem_defn.SetVariableFibreSheetDirectionsFile(finder, true);
     problem_defn.SetSolveUsingSnes();
-    problem_defn.GetVerboseDuringSolve();
+    problem_defn.SetVerboseDuringSolve(true);
 
     CardiacElectroMechanicsProblem<2,1> problem(INCOMPRESSIBLE,
       MONODOMAIN,
