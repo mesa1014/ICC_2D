@@ -39,11 +39,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <iostream>
 // #include <cmath>
 
-const double NashContractionModel::T0 = 24981000.0; //kPa
-const double NashContractionModel::beta = 1.45; // dimensionless
-const double NashContractionModel::Ca_50 = 1.95; // millimolar
-const double NashContractionModel::h = 2.5; // dimensionless
-const double NashContractionModel::Ca_max = 0.00055535; // millimolar
+const double NashContractionModel::T0 = 12573475.0/1000.0; // /1000 to convert from Pa to KPa
+const double NashContractionModel::beta = 0.52; // dimensionless
+const double NashContractionModel::Ca_50 = 0.0009325; // millimolar
+const double NashContractionModel::h = 2.82; // dimensionless
+const double NashContractionModel::Ca_max = 0.0004; // millimolar
 const double NashContractionModel::lambda_val = 1.0; // millimolar
 
 
@@ -60,7 +60,7 @@ NashContractionModel::NashContractionModel()
 
 void NashContractionModel::SetInputParameters(ContractionModelInputParameters& rInputParameters)
 {
-  assert(rInputParameters.intracellularCalciumConcentration != DOUBLE_UNSET);
+  assert(rInputParameters.intracellularCalciumConcentration!= DOUBLE_UNSET);
   assert(rInputParameters.intracellularCalciumConcentration > 0.0);
   mCalciumI = rInputParameters.intracellularCalciumConcentration;
 }
@@ -78,7 +78,7 @@ void NashContractionModel::SetStretchAndStretchRate(double stretch, double stret
 double NashContractionModel::GetActiveTension()
 {
   double tension = (Ca_max * T0 * (1 + beta * (lambda_val - 1)) * pow(mCalciumI, h)) / (1 * (pow(mCalciumI, h) + pow(Ca_50, h)));
-  std::cout << "Ca_i is: " << mCalciumI <<std::endl;
-  std::cout << "tension is: " << tension <<std::endl;
+  // std::cout << "Ca_i is: " << mCalciumI <<std::endl;
+  // std::cout << "tension is: " << tension <<std::endl;
   return tension;
 }
