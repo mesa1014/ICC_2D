@@ -7,6 +7,7 @@
 #include "AbstractCardiacCellFactory.hpp"
 #include "../src/DummyDerivedCa.hpp"
 #include "../src/ICCNeuralCalib_SMC_noCases.hpp"
+#include "../src/imtiaz_2002d_noTstart_COR.hpp"
 
 template<unsigned DIM>
 class ICCFactory : public AbstractCardiacCellFactory<DIM>

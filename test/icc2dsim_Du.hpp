@@ -6,7 +6,7 @@
 
 #include "MonodomainProblem.hpp"
 #include "PetscSetupAndFinalize.hpp"
-// #include "../src/imtiaz_2002d_noTstart_COR.hpp"
+#include "../src/imtiaz_2002d_noTstart_COR.hpp"
 #include "../src/CellICCBioPhy.hpp"
 #include "../src/Du2013_neural_sens.hpp"
 #include "../src/DummyDerivedCa.hpp"
@@ -15,6 +15,7 @@
 #include "TetrahedralMesh.hpp"
 #include "DistributedTetrahedralMesh.hpp"
 #include "TrianglesMeshReader.hpp"
+
 #include "Debug.hpp"
 #include "AbstractElement.hpp"
 #include "Node.hpp"
@@ -52,31 +53,30 @@
 
 
 using namespace std;
-
 class Test2DMonodomainV2 : public CxxTest::TestSuite
 {
 public:
   void TestSimulationV2() //throw(Exception)
   {
     ///// Read electric mesh file
-    // TetrahedralMesh<2,2> mesh;
-    // std::string myFile = "MeshNetwork-2D.1";
-    // std::string meshFile = "/home/chaste/projects/mesh/" + myFile;
-    // TrianglesMeshReader<2,2> mesh_reader(meshFile.c_str());
-    // mesh.ConstructFromMeshReader(mesh_reader);
-    //
-    // ///// Read mechanics mesh f1ile
-    // QuadraticMesh<2> mechanics_mesh;
-    // std::string myFile_m = "MeshNetwork-2D.2";
-    // std::string meshFile_m = "/home/chaste/projects/mesh/" + myFile_m;
-    // TrianglesMeshReader<2,2> mesh_reader_m(meshFile_m.c_str(),2);
-    // mechanics_mesh.ConstructFromMeshReader(mesh_reader_m);
-
     TetrahedralMesh<2,2> mesh;
-    mesh.ConstructRegularSlabMesh(0.1/*stepsize*/, 2.0/*length*/, 3.0/*width*/, 0.2/*depth*/);
+    std::string myFile = "mesh2by3_s.1";
+    std::string meshFile = "../projects/mesh/2by3/structured/" + myFile;
+    TrianglesMeshReader<2,2> mesh_reader(meshFile.c_str());
+    mesh.ConstructFromMeshReader(mesh_reader);
 
+    ///// Read mechanics mesh f1ile
     QuadraticMesh<2> mechanics_mesh;
-    mechanics_mesh.ConstructRegularSlabMesh(0.2, 2.0, 3.0, 0.2 /*as above with a different stepsize*/);
+    std::string myFile_m = "mesh2by3_s.2";
+    std::string meshFile_m = "../projects/mesh/2by3/structured/" + myFile_m;
+    TrianglesMeshReader<2,2> mesh_reader_m(meshFile_m.c_str(),2);
+    mechanics_mesh.ConstructFromMeshReader(mesh_reader_m);
+
+    // TetrahedralMesh<2,2> mesh;
+    // mesh.ConstructRegularSlabMesh(0.1/*stepsize*/, 2.0/*length*/, 3.0/*width*/, 0.2/*depth*/);
+    //
+    // QuadraticMesh<2> mechanics_mesh;Items in trash are deleted forever after 30 days
+    // mechanics_mesh.ConstructRegularSlabMesh(0.2, 2.0, 3.0, 0.2 /*as above with a different stepsize*/);
 
 
     ///// fixed nodes are all nodes on top and bottom
@@ -134,20 +134,23 @@ public:
     ICCFactory<2> cell_factory(iccNodes);
 
     // Material law
-    MooneyRivlinMaterialLaw<2> law(0.1);
+    MooneyRivlinMaterialLaw<2> law(3.0); // 0.1 or 1.0
     // ExponentialMaterialLaw<2> law2(1000.0, 2.0); // First parameter is 'a', second 'b', in W=a*exp(b(I1-3))
     // FungMaterialLaw<2> law2(1400.0, 39.0, 72.0, 0.4);
     SchmidCostaExponentialLaw2d law2;
+
     // Fibre directions
-    // coming soon!
+    OutputFileHandler handler("");
+    FileFinder finder = handler.FindFile("2by3_fibre_s.ortho");
 
     // Cardiac ElectroMechanics problem definition
     ElectroMechanicsProblemDefinition<2> problem_defn(mechanics_mesh);
-    problem_defn.SetContractionModel(NASH,0.1/*contraction model ODE timestep*/); //KERCHOFFS2003
+    problem_defn.SetContractionModel(NASH, 0.1/*contraction model ODE timestep*/); //KERCHOFFS2003
+    problem_defn.SetVariableFibreSheetDirectionsFile(finder, false);
     // problem_defn.SetSolverType(IMPLICIT);
     // problem_defn.SetDeformationAffectsElectrophysiology(false /*deformation affects conductivity*/, false /*deformation affects cell models*/);
     // problem_defn.SetUseDefaultCardiacMaterialLaw(INCOMPRESSIBLE);
-    problem_defn.SetMaterialLaw(INCOMPRESSIBLE, &law2);
+    problem_defn.SetMaterialLaw(INCOMPRESSIBLE, &law);
     problem_defn.SetZeroDisplacementNodes(fixed_nodes);
     problem_defn.SetMechanicsSolveTimestep(100.0);
     // problem_defn.SetVariableFibreSheetDirectionsFile(finder, true);
@@ -163,8 +166,8 @@ public:
       "icc2d_Du");
 
       c_vector<double,2> node_to_watch;
-      node_to_watch(0) = 0.1;
-      node_to_watch(1) = 0.4;
+      node_to_watch(0) = 1.0;
+      node_to_watch(1) = 1.0;
       problem.SetWatchedPosition(node_to_watch);
       problem.SetOutputDeformationGradientsAndStress(100.0);
 
