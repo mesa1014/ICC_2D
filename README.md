@@ -40,4 +40,4 @@ https://github.com/Chaste/chaste-docker
 
 - You can check the results in the testoutput folder and visualise with cmgui
   
-  /testoutput/icc2d_Du/deformation/cmgui/loadsolution.com
+  /testoutput/icc2d_Du/deformation/cmgui/LoadSolutions.com
