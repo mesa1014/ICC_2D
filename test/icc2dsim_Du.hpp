@@ -69,16 +69,17 @@ public:
   void TestSimulationV2() //throw(Exception)
   {
     ///// read electric mesh from file
+    //// 2cm x 3cm mesh
     TetrahedralMesh<2,2> mesh;
     std::string myFile = "mesh2by3_s.1";
-    std::string meshFile = "../projects/mesh/2by3/structured/" + myFile;
+    std::string meshFile = "../projects/icc2d/mesh/structured/" + myFile;
     TrianglesMeshReader<2,2> mesh_reader(meshFile.c_str());
     mesh.ConstructFromMeshReader(mesh_reader);
 
     ///// read mechanics mesh f1ile
     QuadraticMesh<2> mechanics_mesh;
     std::string myFile_m = "mesh2by3_s.2";
-    std::string meshFile_m = "../projects/mesh/2by3/structured/" + myFile_m;
+    std::string meshFile_m = "../projects/icc2d/mesh/structured/" + myFile_m;
     TrianglesMeshReader<2,2> mesh_reader_m(meshFile_m.c_str(),2);
     mechanics_mesh.ConstructFromMeshReader(mesh_reader_m);
 
