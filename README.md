@@ -22,7 +22,7 @@ https://github.com/Chaste/chaste-docker
 
 - clone this repo to the projects folder
 
-- run the following in the terminal:
+- run the following in the terminal (you need to do this only once):
 
   cmake icc2d 8 -DCMAKE_BUILD_TYPE:STRING="Release"\
           -DChaste_ERROR_ON_WARNING:BOOL="OFF" \
