@@ -20,7 +20,7 @@ https://github.com/Chaste/chaste-docker
 
 ### Steps:
 
-- clone this repo to the projects folder
+- clone this repo into the projects folder
 
 - run the following in the terminal (you need to do this only once):
 
