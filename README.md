@@ -45,14 +45,14 @@ sudo docker cp /utils/SchmidCostaExponentialLaw2d.hpp chaste:/home/chaste/src/co
 - run the following in the terminal (you need to do this only once):
 
 ```
-  cmake icc2d 8 -DCMAKE_BUILD_TYPE:STRING="Release"\
+  cmake ICC_2D 8 -DCMAKE_BUILD_TYPE:STRING="Release"\
           -DChaste_ERROR_ON_WARNING:BOOL="OFF" \
           -DChaste_UPDATE_PROVENANCE:BOOL="OFF" \
           -H/home/chaste/src \
           -B/home/chaste/lib
 ```
 
-- go to /home/chaste/lib/projects/icc2d/ and run:
+- go to /home/chaste/lib/projects/ICC_2D/ and run:
 
 ```
   make -j8
