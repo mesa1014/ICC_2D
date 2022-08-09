@@ -20,7 +20,9 @@ https://github.com/Chaste/chaste-docker
 
 Basically, for Docker, you only need to type this in the terminal:
 
+```
 docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(pwd)/testoutput:/home/chaste/testoutput chaste/release
+```
 
 ### Steps:
 
@@ -32,19 +34,25 @@ docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(pwd)/t
 
 - run the following in the terminal (you need to do this only once):
 
+```
   cmake icc2d 8 -DCMAKE_BUILD_TYPE:STRING="Release"\
           -DChaste_ERROR_ON_WARNING:BOOL="OFF" \
           -DChaste_UPDATE_PROVENANCE:BOOL="OFF" \
           -H/home/chaste/src \
           -B/home/chaste/lib
-          
+```
+
 - go to /home/chaste/lib/projects/icc2d/ and run:
 
+```
   make -j8
+```
 
 - go to the /test folder and run:
 
+```
   ./icc2dsim_Du 
+```
 
 - You can check the results in the testoutput folder and visualise with cmgui
   
