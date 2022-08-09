@@ -148,7 +148,7 @@ public:
     MooneyRivlinMaterialLaw<2> law(3.0); // need to check the literature for this constant
     // ExponentialMaterialLaw<2> law2(1000.0, 2.0); // First parameter is 'a', second 'b', in W=a*exp(b(I1-3))
     // FungMaterialLaw<2> law2(1400.0, 39.0, 72.0, 0.4);
-    SchmidCostaExponentialLaw2d law2;
+    SchmidCostaExponentialLaw2d law2; //// not used here!
 
     //// fibre directions
     OutputFileHandler handler("");
