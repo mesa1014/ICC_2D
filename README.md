@@ -45,3 +45,8 @@ https://github.com/Chaste/chaste-docker
 - You can check the results in the testoutput folder and visualise with cmgui
   
   /testoutput/icc2d_Du/deformation/cmgui/LoadSolutions.com
+  
+- voltage and Ca of the watched node can be checked in /testoutput/icc2d_Du/watched.txt
+
+- strain and stress of the watched node can be checked in /testoutput/icc2d_Du/deformation/*.strain and *.stress
+
