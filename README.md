@@ -64,11 +64,34 @@ sudo docker cp /utils/SchmidCostaExponentialLaw2d.hpp chaste:/home/chaste/src/co
   ./icc2dsim_Du 
 ```
 
-- You can check the results in the testoutput folder and visualise with cmgui
+- you can check the results in the testoutput folder and visualise with cmgui
   
   /testoutput/icc2d_Du/deformation/cmgui/LoadSolutions.com
   
 - voltage and Ca of the watched node can be checked in /testoutput/icc2d_Du/watched.txt
+
+  it is noted that Ca is not watched by default, so you need to:
+  
+  uncomment and change line 157 in /Chaste/heart/src/problem/CardioElectroMechanicsProblem.cpp:
+  ```
+    double Ca = mpElectricsProblem->GetTissue()->GetCardiacCell(mWatchedElectricsNodeIndex)->GetIntracellularCalciumConcentration();
+  ```
+  add the following (above line 164):
+  
+  ```
+  *mpWatchedLocationFile << Ca << "\n";
+  ```
+  
+  change (remove "\n"):
+  ```
+  *mpWatchedLocationFile << V << "\n"; 
+  ```
+  
+  to:
+  
+  ```
+  *mpWatchedLocationFile << V << " ";
+  ```
 
 - strain and stress of the watched node can be checked in /testoutput/icc2d_Du/deformation/*.strain and *.stress
 
