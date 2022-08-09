@@ -26,7 +26,9 @@ sudo docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(p
 
 ### Steps:
 
-- clone this repo into the Chaste projects folder
+- clone this repo into the Chaste projects folder.
+
+- copy /fibre/2by3_fibre_s.ortho to the Chaste "testoutput" folder or change the path in line 155 of icc2dsim_Du.hpp.
 
 - if you want to use Nash1998 contraction model (this is the default in the main test, so you **must** do this step), copy /utils/NashContractionModel.cpp (and .hpp) files to /Chaste/heart/src/odes/contractionmodels/ and change the constants if necessary:
 
