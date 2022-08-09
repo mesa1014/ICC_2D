@@ -28,7 +28,7 @@ sudo docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(p
 
 - clone this repo into the Chaste projects folder
 
-- if you want to use Nash1998 contraction model, copy /utils/NashContractionModel.cpp (and .hpp) files to /Chaste/heart/src/odes/contractionmodels/ and change the constants if necessary:
+- if you want to use Nash1998 contraction model (this is the default in the main test, so you **must** do this step), copy /utils/NashContractionModel.cpp (and .hpp) files to /Chaste/heart/src/odes/contractionmodels/ and change the constants if necessary:
 
 ```
 sudo docker cp /utils/NashContractionModel.cpp chaste:/home/chaste/src/heart/src/odes/contractionmodels/
