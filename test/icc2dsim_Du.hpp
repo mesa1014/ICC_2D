@@ -55,7 +55,6 @@ August 2022
 #include "ExponentialMaterialLaw.hpp"
 #include "MooneyRivlinMaterialLaw.hpp"
 #include "CompressibleMooneyRivlinMaterialLaw.hpp"
-#include "FungMaterialLaw.hpp"
 #include "SchmidCostaExponentialLaw2d.hpp"
 
 //// not necessary
