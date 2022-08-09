@@ -18,9 +18,13 @@ Or use the docker version:
 
 https://github.com/Chaste/chaste-docker
 
+Basically, for Docker, you only need to type this in the terminal:
+
+docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(pwd)/testoutput:/home/chaste/testoutput chaste/release
+
 ### Steps:
 
-- clone this repo into the projects folder
+- clone this repo into the Chaste projects folder
 
 - if you want to use Nash1998 contraction model, copy /utils/NashContractionModel.cpp (and .hpp) files to /Chaste/heart/src/odes/contractionmodels/ and change the constants if necessary.
 
