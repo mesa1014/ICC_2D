@@ -38,7 +38,7 @@ sudo docker cp /utils/NashContractionModel.hpp chaste:/home/chaste/src/heart/src
 ```
 also add **Nash** to line 46 of /Chaste/heart/src/odes/contractionmodels/ContractionModelName.hpp
 
-and add the following to line 44 of Chaste/heart/src/problem/cell_factories/LabelBasedContractionCellFactory.hpp
+and add the following to line 44 of Chaste/heart/src/problem/cell_factories/LabelBasedContractionCellFactory.hpp:
 
 ```
 #include "NashContractionModel.hpp" 
