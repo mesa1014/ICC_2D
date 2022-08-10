@@ -1,4 +1,4 @@
-# Solving electromechanics of ICC using CHASTE
+# Electromechanics simulation of ICC using CHASTE
 
 This code solves electroMechanics for a 2D ICC block:
 
