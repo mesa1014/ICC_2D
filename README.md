@@ -36,6 +36,13 @@ sudo docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(p
 sudo docker cp /utils/NashContractionModel.cpp chaste:/home/chaste/src/heart/src/odes/contractionmodels/
 sudo docker cp /utils/NashContractionModel.hpp chaste:/home/chaste/src/heart/src/odes/contractionmodels/
 ```
+also add **Nash** to line 46 of /Chaste/heart/src/odes/contractionmodels/ContractionModelName.hpp
+
+and add the following to line 44 of Chaste/heart/src/problem/cell_factories/LabelBasedContractionCellFactory.hpp
+
+```
+#include "NashContractionModel.hpp" 
+```
 
 - if you want to use an exponential material law, copy /utils/SchmidCostaExponentialLaw2d.cpp (and .hpp) files to /Chaste/continuum_mechanics/src/problem/material_laws/ and change the constants if necessary. This material law is not stable and most of the time the solver does not converge! Consider using Mooney-Rivlin material law (it's the default in the main test code (line 148, 163) at the moment):
 
