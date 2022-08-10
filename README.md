@@ -30,7 +30,7 @@ sudo docker run --name chaste -it --init --rm -v chaste_data:/home/chaste -v $(p
 
 - copy /fibre/2by3_fibre_s.ortho to the Chaste "testoutput" folder or change the path in line 155 of icc2dsim_Du.hpp.
 
-- if you want to use Nash (1998) contraction model (this is the default in the main test, so you **must** do this step), copy /utils/NashContractionModel.cpp (and .hpp) files to /Chaste/heart/src/odes/contractionmodels/ and change the constants if necessary:
+- if you want to use Nash (1998) contraction model (this is the default in the main test, so you **must** do this step), copy /utils/NashContractionModel.cpp (and .hpp) files to /Chaste/heart/src/odes/contractionmodels/ and change the constants inside the code if necessary:
 
 ```
 sudo docker cp /utils/NashContractionModel.cpp chaste:/home/chaste/src/heart/src/odes/contractionmodels/
@@ -54,7 +54,7 @@ case NASH:
 
 ```
 
-- if you want to use an exponential material law, copy /utils/SchmidCostaExponentialLaw2d.cpp (and .hpp) files to /Chaste/continuum_mechanics/src/problem/material_laws/ and change the constants if necessary. This material law is not stable and most of the time the solver does not converge! Consider using Mooney-Rivlin material law (it's the default in the main test code (line 148, 163) at the moment):
+- if you want to use an exponential material law, copy /utils/SchmidCostaExponentialLaw2d.cpp (and .hpp) files to /Chaste/continuum_mechanics/src/problem/material_laws/ and change the constants inside the code if necessary. This material law is not stable and most of the time the solver does not converge! Consider using Mooney-Rivlin material law (it's the default in the main test code (line 148, 163) at the moment):
 
 ```
 sudo docker cp /utils/SchmidCostaExponentialLaw2d.cpp chaste:/home/chaste/src/continuum_mechanics/src/problem/material_laws/
